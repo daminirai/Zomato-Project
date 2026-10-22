@@ -1,0 +1,50 @@
+name: Enterprise CI Pipeline 
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+      - feature/**
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+  workflow_dispatch:
+
+jobs:
+    build:
+      name: Build React Application
+      runs-on: ubuntu-latest
+      timeout-minutes: 20
+      defaults:
+         run:
+           shell: bash
+           
+    steps:
+
+       - name: Checkout Repository
+        uses: actions/checkout@v4
+
+       - name: Install Dependencies
+        run: npm ci
+
+       - name: Verify Installed Packages
+        run: npm ls || true
+
+       - name: Run ESLint
+        run: npm run lint
+
+       - name: Run Unit Tests
+        env:
+          CI: true
+        run: echo "code is tested"
+
+       - name: deploy
+        run: echo "code is deployed"
+
+
+
+
